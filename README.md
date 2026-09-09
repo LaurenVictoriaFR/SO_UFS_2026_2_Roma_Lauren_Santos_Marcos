@@ -19,17 +19,17 @@ Trabalho da disciplina de Sistemas Operacionais (UFS, 2026.2) — (AV1). O proje
 
 ## Trilha de aplicação escolhida
 
-- **Trilha:** [preencher — A (Open WebUI), B (ollama-local-rag) ou C (ollama_pdf_rag)]
-- **Camada de aplicação:** [preencher]
-- **Repositório da camada de aplicação:** [preencher URL/commit/tag]
+- **Trilha:** Trilha A
+- **Camada de aplicação:** open-webui
+- **Repositório da camada de aplicação:** [https://github.com/open-webui/open-webui](https://github.com/open-webui/open-webui)
 
 ## Modelo selecionado (Hugging Face)
 
-- **Nome completo do modelo:** [preencher]
-- **URL do model card:** [preencher]
-- **Parâmetros:** [preencher]
-- **Formato / quantização:** [preencher]
-- **Licença:** [preencher]
+- **Nome completo do modelo:** Llama-3.2-3B-Instruct
+- **URL do model card:** [https://huggingface.co/unsloth/Llama-3.2-3B-Instruct-GGUF](https://huggingface.co/unsloth/Llama-3.2-3B-Instruct-GGUF)
+- **Parâmetros:** 3.21B
+- **Formato / quantização:** Q4_K_M
+- **Licença:** [Llama 3.2 Community License Agreement](https://huggingface.co/meta-llama/Llama-3.2-1B/blob/main/LICENSE.txt)
 
 ## Ambiente experimental
 
