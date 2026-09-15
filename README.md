@@ -34,7 +34,7 @@ Trabalho da disciplina de Sistemas Operacionais (UFS, 2026.2) — (AV1). O proje
 ## Ambiente experimental
 
 - **Sistema operacional / kernel:** Ubuntu 26.04.1 LTS Kernel 6.18.33.2-microsoft-standard-WSL2
-- **CPU / núcleos:** 6/12
+- **CPU - núcleos/threads:** AMD Ryzen 5 6600H - 6/12
 - **RAM:** 8GB
 - **GPU / VRAM (se houver):** NVIDIA GeForce RTX 3050 4GB
 - **Ambiente de execução:** WSL2
