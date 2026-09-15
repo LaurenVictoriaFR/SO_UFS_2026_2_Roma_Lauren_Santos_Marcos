@@ -1,0 +1,57 @@
+# Análise Técnica das Configurações de Execução
+
+## 1. Descrição dos Ambientes e Configurações Analisadas
+
+Os experimentos foram conduzidos em um ambiente virtualizado via WSL2 (Ubuntu Linux) sob a arquitetura de hardware composta por um processador AMD Ryzen 5 6600H (6 núcleos físicos / 12 threads), 8 GB de RAM host (3,4 GB visíveis/alocados ao WSL2) e uma GPU dedicada NVIDIA GeForce RTX 3050 (4 GB VRAM). O modelo avaliado foi o Llama-3.2-3B-Instruct (quantizado em Q4) gerenciado pelo Ollama (v0.33.2) e acessado via interface Open WebUI.
+
+---
+
+### Configuração 1 — Execução Padrão com Aceleração por GPU
+* **Descrição:** Execução padrão do runtime com offload completo das camadas do modelo para a memória da GPU (RTX 3050).
+* **Comportamento do Sistema:**
+  * Durante a fase de inicialização e inferência, o Ollama alocou cerca de 18 a 25 threads de controle no sistema operacional.
+  * O papel dessas threads é gerenciar as requisições HTTP da API, manter a sincronização de chamadas via drivers NVIDIA CUDA e controlar a comunicação inter-processos (IPC).
+  * A CPU atua primariamente como orquestradora de chamadas I/O (ficando em baixíssima utilização, ~1.6% a 1.7%), enquanto a GPU assume 100% dos cálculos de multiplicação matricial.
+* **Desempenho:** 
+  * A taxa de geração manteve-se altamente estável e fluida entre 36 e 39 tokens/s.
+  * A pegada de memória do modelo quantizado ocupou cerca de 2,3 GB de VRAM, operando sem estouros no teto de 4 GB.
+
+---
+
+### Configuração 2 — Concorrência Simultânea e Gestão de Fila FIFO
+* **Descrição:** Submissão simultânea de 3 requisições HTTP independentes através de múltiplas abas no Open WebUI para testar a capacidade de multiprocessamento do runtime.
+* **Comportamento do Sistema:**
+  * Devido às restrições de memória de vídeo do hardware (4 GB de VRAM), o Ollama/llama.cpp operou sob a regra de execução paralela unitária (`num_parallel = 1`), ativando um mecanismo de enfileiramento sequencial (FIFO).
+  * Embora o processo tenha mantido 25 threads abertas na tabela do SO, a grande maioria permaneceu em estado de espera (*Sleeping/IO Wait*) aguardando a finalização da requisição ativa na GPU.
+* **Desempenho e Impacto na Latência:**
+  * A velocidade individual de geração manteve o patamar de 36 a 39 tokens/s.
+  * O custo do tempo de espera em fila elevou severamente a latência de ponta a ponta: a 3ª requisição aguardou cerca de 139 segundos na fila, registrando um tempo total HTTP de 151 segundos.
+  * Observou-se um leve incremento no uso de RAM do host (58%) e CPU (28,6%) para sustentar os contextos mantidos em cache.
+
+---
+
+### Configuração 3 — Execução Forçada em CPU (Fallback / Sem Aceleração)
+* **Descrição:** Inferência forçada no processador principal via variável de ambiente `CUDA_VISIBLE_DEVICES=-1`.
+* **Comportamento do Sistema:**
+  * O motor llama.cpp desativou a aceleração CUDA e inicializou exatamente 6 threads de processamento via OpenMP, quantidade rigorosamente alinhada aos 6 núcleos físicos do AMD Ryzen 5 6600H.
+  * Diferente das threads administrativas do modo GPU, essas 6 threads executaram rotinas contínuas de processamento matricial intenso (loops de produto escalar), mantendo ocupação contínua de 100% em cada núcleo.
+  * Essa alocação total resultou em um consumo de CPU reportado de 580% no Linux (soma das capacidades dos 6 núcleos físicos).
+* **Desempenho e Gargalos:**
+  * **Saturação Computacional:** A ausência da aceleração paralela da GPU gerou um gargalo crítico no processador.
+  * **Degradação de Vazão:** A taxa de geração despencou para um intervalo de 2,04 a 5,27 tokens/s (uma queda de 15x a 20x na responsividade).
+  * **Impacto em Memória e Carga Fria:** O uso de RAM do host saltou para 82,4%, e o tempo de carregamento inicial (*cold start* do modelo do disco para a RAM) elevou-se para a faixa de 124 a 185 segundos.
+
+---
+
+## 2. Glossário Explicativo das Colunas da Tabela de Desempenho
+
+| Coluna | Descrição Técnica |
+| :--- | :--- |
+| **Nº** | Número sequencial do teste (0 a 12), correspondente à ordem de execução experimental. |
+| **Configuração** | Identificação do cenário testado (Config 1: GPU Padrão, Config 2: Concorrência FIFO, Config 3: CPU Forçada). |
+| **Horário** | Timestamp de início do envio da requisição HTTP (HH:MM:SS). |
+| **Prompt Tokens** | Quantidade de tokens do prompt de entrada processados na fase de pré-preenchimento (*prompt evaluation*). |
+| **Eval Tokens** | Quantidade de tokens de resposta gerados iterativamente pelo modelo. |
+| **Tempo Processamento (ms)** | Tempo computacional puro gasto pelo llama.cpp/Ollama para processar o prompt e gerar os tokens (em milissegundos). |
+| **Tempo Total Http(s)** | Tempo total de resposta percebido pelo cliente HTTP/Open WebUI em segundos (inclui tempo de espera na fila FIFO + tempo de inferência). |
+| **Tokens Por Seg** | Vazão/velocidade média de geração de tokens de resposta (`eval_tokens / tempo_geracao_s`). |
