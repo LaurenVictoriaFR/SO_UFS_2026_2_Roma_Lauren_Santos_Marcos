@@ -7,12 +7,11 @@ Atividade 1 (AV1) — Sistemas Operacionais (UFS, 2026.2)
 | # | Integrantes |
 |---|---|
 | 01 | Lauren Victoria Ferreira Roma |
-| 02 | Gabriel Ramos de Carvalho |
-| 03 | Marcos Vinícios Assunção Nery Santos |
-| 04 | Daniel de Andrade Lima |
-| 05 | Wanessa Silva Santos |
-| 06 | Carlos Henrico Fontes Cabral |
-| 07 | Roseane Resende Couto |
+| 02 | Marcos Vinícios Assunção Nery Santos |
+| 03 | Daniel de Andrade Lima |
+| 04 | Wanessa Silva Santos |
+| 05 | Carlos Henrico Fontes Cabral |
+| 06 | Roseane Resende Couto |
 
 ## Descrição do projeto
 Trabalho da disciplina de Sistemas Operacionais (UFS, 2026.2) — (AV1). O projeto consiste em instalar e executar localmente uma aplicação de IA generativa baseada no Ollama, analisando como processos, threads, escalonamento, uso de CPU/memória e chamadas de sistema se comportam durante a inferência de um modelo de linguagem em ambiente Linux. 
