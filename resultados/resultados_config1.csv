@@ -1,0 +1,8 @@
+numero;configuracao;prompt;horario;prompt_tokens;ttft_ms;eval_tokens;tokens_por_seg;tempo_total_ollama_ms;tempo_total_http_s;erro
+1;Padrao-curto;Explique em uma frase oq e um sistema operacional;18:10;22;1286.51;45;36.15;2503.60;12.26;nao
+2;Padrao-curto;defina em uma frase oq e um sistema operacional;18:12;17;1002.94;55;20.18;3678.51;4.33;nao
+3;Padrao-curto;me explique em uma frase oq e um sistema operacional;18:15;18;440.36;45;24.10;2266.21;2.38;nao
+4;Padrao-longo;Descreva detalhadamente como um SO gerencia processos e threads (v1);18:15;102;1043.87;889;36.71;25234.72;25.62;nao
+5;Padrao-longo;fale em pelo menos tres paragrafos sobre SO gerenciando processos e threads (v2);18:17;97;209.94;716;36.81;19636.24;20.10;nao
+6;Padrao-longo;Me explique em pelo menos tres paragrafos sobre SO gerenciando processos e threads (v3);18:18;99;389.68;886;33.86;26529.42;27.00;nao
+0;Padrao-cargafria;Me fale em uma frase oq o llama e;18:32;36;994.91(+78760 de carga do modelo);36;28.20;2235.97;81000;nao

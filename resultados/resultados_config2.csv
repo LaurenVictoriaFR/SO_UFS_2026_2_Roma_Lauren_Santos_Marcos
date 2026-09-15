@@ -1,0 +1,4 @@
+numero;configuracao;horario_envio_aprox;prompt_tokens;ttft_ms;eval_tokens;tokens_por_seg;tempo_processamento_ms;tempo_total_http_s;espera_fila_aprox_s;erro
+1;Concorrencia-3simultaneas;18:51:34;117;2378.17(+~89000 de carga);934;37.93;26976.27;116;0(1a da fila, so carga do modelo);nao
+2;Concorrencia-3simultaneas;18:51:37;1(cache);83.90;795;38.96;20462.48;137;116;nao
+3;Concorrencia-3simultaneas;18:51:35;1(cache);33.46;465;39.20;11870.78;151;139;nao

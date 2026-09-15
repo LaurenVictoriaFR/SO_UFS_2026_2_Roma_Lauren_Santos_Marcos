@@ -1,0 +1,4 @@
+numero;configuracao;horario;prompt_tokens;ttft_ms;eval_tokens;tokens_por_seg;tempo_processamento_ms;tempo_total_http_s;carga_fria_s;erro
+1;CPU-curto;20:13;37;9585.98;47;2.04;32138.69;158;124.49;nao
+2;CPU-curto;20:19;17(20 cache);10619.61;57;4.98;21866.28;22.83;0;nao
+3;CPU-curto;20:21;17(20 cache);9701.44;70;5.27;22787.87;23.40;0;nao
