@@ -42,27 +42,65 @@ Trabalho da disciplina de Sistemas Operacionais (UFS, 2026.2) — (AV1). O proje
 
 ## Instalação
 
-```bash
-# instalar o Ollama
-[preencher comandos]
+### Instalar o Ollama (Linux/WSL2)
+curl -fsSL https://ollama.com/install.sh | sh
 
-# instalar a camada de aplicação escolhida
-[preencher comandos]
-```
+### Instalar a camada de aplicação (Open WebUI, via Docker)
+docker pull ghcr.io/open-webui/open-webui:main
+
+docker run -d -p 3000:8080 \
+  -v open-webui:/app/backend/data \
+  --name open-webui \
+  ghcr.io/open-webui/open-webui:main
+
+### Adaptações realizadas
+O endereço sugerido pela documentação oficial (http://host.docker.internal:11434)
+não funcionou. Foi necessário configurar manualmente o IP da interface do WSL2
+(172.26.19.219:11434) na tela de conexões do Open WebUI (Admin Settings → Connections).
+
+### Diagnóstico do problema (limitações e erros encontrados)
+- Erro observado ao tentar host.docker.internal: Connection refused (via curl -v
+  de dentro do container)
+- ss -tlnp confirmou que o Ollama escuta em todas as interfaces (*:11434)
+- curl -v mostrou que host.docker.internal resolve corretamente para 192.168.65.254,
+  mas essa não é a mesma sub-rede da distro WSL2 (172.26.19.219, confirmado via
+  hostname -I)
+- Conclusão: Docker Desktop e a distro WSL2 operam em namespaces de rede distintos,
+  mesmo com a integração WSL2 habilitada, a variável host.docker.internal não
+  alcança o Ollama nesse cenário
+
+### Baixar o modelo
+ollama pull llama3.2:3b
 
 ## Execução
 
-```bash
-[preencher comandos para rodar o sistema]
-```
+### Iniciar o Ollama (padrão, via systemd)
+sudo systemctl start ollama
+
+### Acessar a aplicação
+Abrir http://localhost:3000 no navegador, configurar a conexão com o Ollama
+(172.26.19.219:11434) em Admin Settings → Connections, e selecionar o modelo llama3.2:3b.
 
 ## Reprodução dos experimentos
 
-Descreva aqui como rodar os scripts de medição e reproduzir as três configurações comparativas (padrão, concorrência/carga modificada, ajuste de execução local).
+### Configuração 1 — Padrão (GPU)
+1. Rodar o Ollama normalmente: `sudo systemctl start ollama`
+2. Em outro terminal, rodar o script de monitoramento: `bash scripts/monitor.sh`
+3. Enviar os prompts de teste pela interface do Open WebUI 
+4. Dados salvos em resultados/resultados_config1.csv e resultados_config1_recursos.csv
 
-```bash
-[preencher scripts/comandos]
-```
+### Configuração 2 — Concorrência
+1. Com o Ollama já rodando (Configuração 1), disparar múltiplas requisições simultâneas
+   pelo Open WebUI
+2. Monitorar com: `bash scripts/monitor.sh`
+3. Dados salvos em resultados/resultados_config2.csv
+
+### Configuração 3 — Execução forçada em CPU
+1. Parar a instância padrão: `sudo systemctl stop ollama`
+2. Iniciar manualmente forçando CPU:
+   sudo -u ollama CUDA_VISIBLE_DEVICES=-1 OLLAMA_HOST=0.0.0.0:11434 ollama serve
+3. Enviar os mesmos prompts de teste pela interface
+4. Dados salvos em resultados/resultados_config3.csv
 
 ## Estrutura do repositório
 
@@ -80,12 +118,11 @@ Descreva aqui como rodar os scripts de medição e reproduzir as três configura
 /apresentacao.pdf               # item 11 — slides da apresentação ( a ser inserido)
 /VIDEO.md                       # URL do vídeo da atividade (seção 13.1 do enunciado)
 ```
-[preencher]
 
 ## Vídeo da atividade
 
 - **URL:** [preencher]
-- **Data de gravação:** [preencher]
+- **Data de gravação:** 15/09/2026
 
 ## Declaração de Uso de IA Generativa
 
