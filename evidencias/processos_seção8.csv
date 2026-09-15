@@ -1,0 +1,5 @@
+    PID    PPID STAT  NI PRI PSR %CPU %MEM NLWP COMMAND
+    160       1 Ssl    0  19   3  0.4  0.6   18 ollama
+   1073    1072 Ssl+   0  19   6  0.3  0.8   14 docker-desktop-
+427;404;python3 uvicorn open_webui (dentro do container)
+1143;160;Sl;0;19;6;92.5;26.2;24;llama-server (ativo, durante inferência)
