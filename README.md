@@ -105,7 +105,7 @@ Abrir http://localhost:3000 no navegador, configurar a conexão com o Ollama
 ## Estrutura do repositório
 
 ```
-/relatorio-tecnico.pdf          # item 1 — relatório técnico completo ( a ser inserido)
+/relatorio-tecnico.pdf          # item 1 — relatório técnico completo
                                 # item 2 — URL/commit/tag/release da camada de aplicação: ver seção "Trilha de aplicação escolhida" acima neste README
 /ficha-tecnica-modelo.md        # item 3 — ficha técnica do modelo Hugging Face
 /registro-classroom.md          # item 4 — cópia do registro feito no Classroom
@@ -115,16 +115,17 @@ Abrir http://localhost:3000 no navegador, configurar a conexão com o Ollama
 /resultados/                    # item 8 — logs, tabelas, dados e gráficos
 /evidencias/                    # item 9 — evidências de processos, threads, chamadas de sistema, memória, armazenamento
 /declaracao-uso-ia.md           # item 10 — Declaração de Uso de IA Generativa
-/apresentacao.pdf               # item 11 — slides da apresentação ( a ser inserido)
-/VIDEO.md                       # URL do vídeo da atividade (seção 13.1 do enunciado)
+/apresentacao.pdf               # item 11 — slides da apresentação 
+/VIDEO.md                       # URL do vídeo da atividade 
 ```
 
 ## Vídeo da atividade
 
-- **URL:** [preencher]
+- **URL:** https://drive.google.com/file/d/1_Bv_BxVhiFWYNxPOnXjoYaqvnVrElprZ/view?usp=drivesdk
 - **Data de gravação:** 15/09/2026
 
 ## Declaração de Uso de IA Generativa
+Ver declaracao-uso-ia.md
 
 Ver arquivo `declaracao-uso-ia.md`.
 
